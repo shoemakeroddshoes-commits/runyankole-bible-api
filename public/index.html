@@ -14,53 +14,69 @@
       --mono: 'IBM Plex Mono', monospace; --serif: 'Lora', Georgia, serif; --sans: 'Outfit', sans-serif;
     }
     body { background: var(--parchment); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; min-height: 100vh; }
-    .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
-    header { border-bottom: 1px solid rgba(184,134,11,0.25); padding: 56px 0 48px; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+    header { border-bottom: 1px solid rgba(184,134,11,0.25); padding: 40px 0 36px; }
     .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-    h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 600; line-height: 1.15; color: var(--ink); margin-bottom: 8px; }
+    h1 { font-family: var(--serif); font-size: clamp(1.8rem, 6vw, 3.2rem); font-weight: 600; line-height: 1.15; color: var(--ink); margin-bottom: 8px; }
     h1 em { font-style: italic; color: var(--rust); }
-    .subtitle { font-size: 16px; color: #5a4a30; max-width: 520px; margin-top: 12px; }
-    .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
-    .badge { font-family: var(--mono); font-size: 11px; padding: 4px 10px; border-radius: 3px; letter-spacing: 0.05em; }
+    .subtitle { font-size: 15px; color: #5a4a30; max-width: 520px; margin-top: 12px; }
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+    .badge { font-family: var(--mono); font-size: 10px; padding: 4px 8px; border-radius: 3px; letter-spacing: 0.05em; white-space: nowrap; }
     .badge-green { background: #e8f0e4; color: var(--sage); border: 1px solid #c2d4bb; }
     .badge-gold  { background: #fdf3d8; color: var(--gold); border: 1px solid #e8d090; }
     .badge-rust  { background: #f5e8e0; color: var(--rust); border: 1px solid #dbb89a; }
-    .base-url-block { background: var(--ink); border-radius: 8px; padding: 18px 24px; margin: 40px 0; display: flex; align-items: center; gap: 12px; }
-    .base-url-label { font-family: var(--mono); font-size: 11px; color: #8a7a60; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
-    .base-url-value { font-family: var(--mono); font-size: 14px; color: #f0e6cc; }
-    section { padding: 48px 0; border-bottom: 1px solid rgba(184,134,11,0.15); }
-    h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; color: var(--ink); margin-bottom: 24px; }
-    .endpoint { background: white; border: 1px solid var(--parchment-dark); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
-    .endpoint-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: background 0.15s; }
+    .base-url-block { background: var(--ink); border-radius: 8px; padding: 14px 18px; margin: 32px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .base-url-label { font-family: var(--mono); font-size: 10px; color: #8a7a60; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+    .base-url-value { font-family: var(--mono); font-size: 12px; color: #f0e6cc; word-break: break-all; }
+    section { padding: 36px 0; border-bottom: 1px solid rgba(184,134,11,0.15); }
+    h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: 20px; }
+    .endpoint { background: white; border: 1px solid var(--parchment-dark); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+    .endpoint-header { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: background 0.15s; flex-wrap: wrap; }
     .endpoint-header:hover { background: #faf7f0; }
     .endpoint-header.open { border-bottom-color: var(--parchment-dark); }
-    .method { font-family: var(--mono); font-size: 11px; font-weight: 500; background: #e8f0e4; color: var(--sage); border: 1px solid #c2d4bb; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.05em; }
-    .path { font-family: var(--mono); font-size: 14px; color: var(--ink); flex: 1; }
+    .method { font-family: var(--mono); font-size: 10px; font-weight: 500; background: #e8f0e4; color: var(--sage); border: 1px solid #c2d4bb; padding: 3px 7px; border-radius: 3px; letter-spacing: 0.05em; white-space: nowrap; margin-top: 2px; }
+    .path-wrap { flex: 1; min-width: 0; }
+    .path { font-family: var(--mono); font-size: 13px; color: var(--ink); word-break: break-all; display: block; }
     .path .param { color: var(--rust); }
-    .ep-desc { font-size: 13px; color: #7a6a50; }
-    .endpoint-body { padding: 20px; display: none; }
+    .ep-desc { font-size: 12px; color: #7a6a50; display: block; margin-top: 2px; }
+    .endpoint-body { padding: 16px; display: none; }
     .endpoint-body.open { display: block; }
-    .params-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
-    .params-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a8a70; text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--parchment-dark); }
-    .params-table td { padding: 8px 10px; border-bottom: 1px solid #f0ebe0; vertical-align: top; }
-    .params-table td:first-child { font-family: var(--mono); font-size: 12px; color: var(--rust); white-space: nowrap; }
+    .params-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 16px; }
+    .params-table th { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a8a70; text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--parchment-dark); }
+    .params-table td { padding: 7px 8px; border-bottom: 1px solid #f0ebe0; vertical-align: top; font-size: 12px; }
+    .params-table td:first-child { font-family: var(--mono); font-size: 11px; color: var(--rust); white-space: nowrap; }
+    .params-table .desc-col { display: table-cell; }
     .required { color: var(--gold); font-size: 10px; font-family: var(--mono); }
     .optional  { color: #9a8a70; font-size: 10px; font-family: var(--mono); }
-    pre { background: #1a1208; color: #f0e6cc; font-family: var(--mono); font-size: 12.5px; line-height: 1.6; padding: 16px 18px; border-radius: 6px; overflow-x: auto; margin-bottom: 16px; }
+    pre { background: #1a1208; color: #f0e6cc; font-family: var(--mono); font-size: 11px; line-height: 1.6; padding: 14px 16px; border-radius: 6px; overflow-x: auto; margin-bottom: 16px; }
     .json-key { color: #d4a820; } .json-str { color: #a8c080; } .json-num { color: #e08060; }
     .code-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a8a70; margin-bottom: 6px; }
     .try-section { margin-top: 16px; }
     .try-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a8a70; margin-bottom: 6px; }
     .try-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .try-input { flex: 1; min-width: 80px; font-family: var(--mono); font-size: 12px; padding: 8px 12px; border: 1px solid var(--parchment-dark); border-radius: 5px; background: var(--parchment); color: var(--ink); outline: none; }
+    .try-input { flex: 1; min-width: 60px; font-family: var(--mono); font-size: 12px; padding: 8px 10px; border: 1px solid var(--parchment-dark); border-radius: 5px; background: var(--parchment); color: var(--ink); outline: none; }
     .try-input:focus { border-color: var(--gold); }
-    .try-btn { font-family: var(--mono); font-size: 11px; padding: 8px 16px; background: var(--ink); color: var(--parchment); border: none; border-radius: 5px; cursor: pointer; letter-spacing: 0.05em; transition: background 0.15s; }
+    .try-btn { font-family: var(--mono); font-size: 11px; padding: 8px 16px; background: var(--ink); color: var(--parchment); border: none; border-radius: 5px; cursor: pointer; letter-spacing: 0.05em; transition: background 0.15s; white-space: nowrap; }
     .try-btn:hover { background: var(--rust); }
-    .try-result { background: #1a1208; color: #f0e6cc; font-family: var(--mono); font-size: 11.5px; line-height: 1.6; padding: 14px 16px; border-radius: 6px; white-space: pre-wrap; word-break: break-all; display: none; max-height: 400px; overflow-y: auto; }
+    .try-result { background: #1a1208; color: #f0e6cc; font-family: var(--mono); font-size: 11px; line-height: 1.6; padding: 14px 16px; border-radius: 6px; white-space: pre-wrap; word-break: break-word; display: none; max-height: 320px; overflow-y: auto; }
     .try-result.visible { display: block; }
     .try-result.error { color: #e08060; }
-    footer { padding: 40px 0; font-size: 13px; color: #9a8a70; }
-    code { font-family: var(--mono); font-size: 12px; background: var(--parchment-dark); padding: 1px 5px; border-radius: 3px; }
+    footer { padding: 32px 0; font-size: 13px; color: #9a8a70; }
+    footer a { color: var(--gold); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    code { font-family: var(--mono); font-size: 11px; background: var(--parchment-dark); padding: 1px 5px; border-radius: 3px; }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 0 14px; }
+      header { padding: 32px 0 28px; }
+      h1 { font-size: 1.8rem; }
+      .base-url-block { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .params-table .desc-col { display: none; }
+      .endpoint-header { gap: 8px; }
+      pre { font-size: 10px; padding: 12px; }
+      .try-result { font-size: 10px; }
+      .try-input { font-size: 11px; }
+    }
   </style>
 </head>
 <body>
@@ -88,11 +104,13 @@
     <div class="endpoint">
       <div class="endpoint-header" onclick="toggle(this)">
         <span class="method">GET</span>
-        <span class="path">/api/books</span>
-        <span class="ep-desc">List all 66 books</span>
+        <div class="path-wrap">
+          <span class="path">/api/books</span>
+          <span class="ep-desc">List all 66 books</span>
+        </div>
       </div>
       <div class="endpoint-body">
-        <p style="font-size:14px;color:#5a4a30;margin-bottom:16px;">Returns all books in canonical order with their IDs and Runyankole names.</p>
+        <p style="font-size:13px;color:#5a4a30;margin-bottom:16px;">Returns all books in canonical order with their IDs and Runyankole names.</p>
         <div class="code-label">Example response</div>
         <pre>{
   <span class="json-key">"count"</span>: <span class="json-num">66</span>,
@@ -111,25 +129,18 @@
     <div class="endpoint">
       <div class="endpoint-header" onclick="toggle(this)">
         <span class="method">GET</span>
-        <span class="path">/api/verse?<span class="param">book</span>=10&<span class="param">chapter</span>=1&<span class="param">verse</span>=1</span>
-        <span class="ep-desc">Fetch a single verse</span>
+        <div class="path-wrap">
+          <span class="path">/api/verse?<span class="param">book</span>=10&<span class="param">chapter</span>=1&<span class="param">verse</span>=1</span>
+          <span class="ep-desc">Fetch a single verse</span>
+        </div>
       </div>
       <div class="endpoint-body">
         <table class="params-table">
-          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
-          <tr><td>book</td><td>integer</td><td><span class="required">required</span></td><td>Book ID — get IDs from /api/books</td></tr>
-          <tr><td>chapter</td><td>integer</td><td><span class="required">required</span></td><td>Chapter number</td></tr>
-          <tr><td>verse</td><td>integer</td><td><span class="required">required</span></td><td>Verse number</td></tr>
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th class="desc-col">Description</th></tr>
+          <tr><td>book</td><td>integer</td><td><span class="required">required</span></td><td class="desc-col">Book ID — get IDs from /api/books</td></tr>
+          <tr><td>chapter</td><td>integer</td><td><span class="required">required</span></td><td class="desc-col">Chapter number</td></tr>
+          <tr><td>verse</td><td>integer</td><td><span class="required">required</span></td><td class="desc-col">Verse number</td></tr>
         </table>
-        <div class="code-label">Example response</div>
-        <pre>{
-  <span class="json-key">"book_id"</span>: <span class="json-num">10</span>,
-  <span class="json-key">"book_short"</span>: <span class="json-str">"Kut"</span>,
-  <span class="json-key">"book_name"</span>: <span class="json-str">"Okutandika"</span>,
-  <span class="json-key">"chapter"</span>: <span class="json-num">1</span>,
-  <span class="json-key">"verse"</span>: <span class="json-num">1</span>,
-  <span class="json-key">"text"</span>: <span class="json-str">"Omu kutandika Ruhanga akahanga eiguru n'ensi."</span>
-}</pre>
         <div class="try-section">
           <div class="try-label">Try it</div>
           <div class="try-row">
@@ -146,14 +157,16 @@
     <div class="endpoint">
       <div class="endpoint-header" onclick="toggle(this)">
         <span class="method">GET</span>
-        <span class="path">/api/chapter?<span class="param">book</span>=10&<span class="param">chapter</span>=1</span>
-        <span class="ep-desc">Fetch all verses in a chapter</span>
+        <div class="path-wrap">
+          <span class="path">/api/chapter?<span class="param">book</span>=10&<span class="param">chapter</span>=1</span>
+          <span class="ep-desc">Fetch all verses in a chapter</span>
+        </div>
       </div>
       <div class="endpoint-body">
         <table class="params-table">
-          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
-          <tr><td>book</td><td>integer</td><td><span class="required">required</span></td><td>Book ID</td></tr>
-          <tr><td>chapter</td><td>integer</td><td><span class="required">required</span></td><td>Chapter number</td></tr>
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th class="desc-col">Description</th></tr>
+          <tr><td>book</td><td>integer</td><td><span class="required">required</span></td><td class="desc-col">Book ID</td></tr>
+          <tr><td>chapter</td><td>integer</td><td><span class="required">required</span></td><td class="desc-col">Chapter number</td></tr>
         </table>
         <div class="try-section">
           <div class="try-label">Try it</div>
@@ -170,15 +183,17 @@
     <div class="endpoint">
       <div class="endpoint-header" onclick="toggle(this)">
         <span class="method">GET</span>
-        <span class="path">/api/search?<span class="param">q</span>=Ruhanga</span>
-        <span class="ep-desc">Search verses by keyword</span>
+        <div class="path-wrap">
+          <span class="path">/api/search?<span class="param">q</span>=Ruhanga</span>
+          <span class="ep-desc">Search verses by keyword</span>
+        </div>
       </div>
       <div class="endpoint-body">
         <table class="params-table">
-          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
-          <tr><td>q</td><td>string</td><td><span class="required">required</span></td><td>Search term in Runyankole (min 2 chars)</td></tr>
-          <tr><td>limit</td><td>integer</td><td><span class="optional">optional</span></td><td>Results per page, max 100 (default: 20)</td></tr>
-          <tr><td>offset</td><td>integer</td><td><span class="optional">optional</span></td><td>Pagination offset (default: 0)</td></tr>
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th class="desc-col">Description</th></tr>
+          <tr><td>q</td><td>string</td><td><span class="required">required</span></td><td class="desc-col">Search term in Runyankole (min 2 chars)</td></tr>
+          <tr><td>limit</td><td>integer</td><td><span class="optional">optional</span></td><td class="desc-col">Results per page, max 100 (default: 20)</td></tr>
+          <tr><td>offset</td><td>integer</td><td><span class="optional">optional</span></td><td class="desc-col">Pagination offset (default: 0)</td></tr>
         </table>
         <div class="try-section">
           <div class="try-label">Try it</div>
@@ -194,13 +209,15 @@
     <div class="endpoint">
       <div class="endpoint-header" onclick="toggle(this)">
         <span class="method">GET</span>
-        <span class="path">/api/random</span>
-        <span class="ep-desc">Get a random verse</span>
+        <div class="path-wrap">
+          <span class="path">/api/random</span>
+          <span class="ep-desc">Get a random verse</span>
+        </div>
       </div>
       <div class="endpoint-body">
         <table class="params-table">
-          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
-          <tr><td>book</td><td>integer</td><td><span class="optional">optional</span></td><td>Limit random to a specific book</td></tr>
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th class="desc-col">Description</th></tr>
+          <tr><td>book</td><td>integer</td><td><span class="optional">optional</span></td><td class="desc-col">Limit random to a specific book</td></tr>
         </table>
         <div class="try-section">
           <div class="try-label">Try it</div>
@@ -218,7 +235,7 @@
     <p style="font-size:14px;color:#5a4a30;">Translation: <em>Baibuli Erikwera 1964</em> © The Bible Society of Uganda.</p>
   </section>
 
-<footer>Built by <a href="https://www.oddshoes.dev/" target="_blank" style="color: var(--gold); text-decoration: none;">Odd Shoes</a></footer>
+  <footer>Built by <a href="https://www.oddshoes.dev/" target="_blank">Odd Shoes</a></footer>
 </div>
 <script>
   function toggle(header) {
