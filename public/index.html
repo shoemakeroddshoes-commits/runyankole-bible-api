@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runyankole Bible API</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Georgia, serif; background: #f5f0e8; color: #1a1208; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .card { max-width: 520px; padding: 48px; text-align: center; }
+    h1 { font-size: 2rem; margin-bottom: 8px; }
+    h1 em { color: #8b3a0f; font-style: italic; }
+    p { color: #5a4a30; margin: 16px 0 32px; line-height: 1.7; }
+    .endpoints { text-align: left; background: #1a1208; color: #f0e6cc; border-radius: 8px; padding: 20px 24px; font-family: monospace; font-size: 13px; line-height: 2; }
+    .endpoints span { color: #d4a820; }
+    .footer { margin-top: 32px; font-size: 12px; color: #9a8a70; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Runyankole <em>Bible API</em></h1>
+  <p>Free, public REST API for the Baibuli Erikwera 1964 — 66 books, 31,106 verses in Runyankore-Rukiga.</p>
+  <div class="endpoints">
+    <span>GET</span> /api/books<br>
+    <span>GET</span> /api/verse?book=10&amp;chapter=1&amp;verse=1<br>
+    <span>GET</span> /api/chapter?book=10&amp;chapter=1<br>
+    <span>GET</span> /api/search?q=Ruhanga<br>
+    <span>GET</span> /api/random
+  </div>
+  <div class="footer">Free to use · No auth required · CORS enabled</div>
+</div>
+</body>
+</html>
