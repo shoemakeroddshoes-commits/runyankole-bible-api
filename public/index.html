@@ -4,30 +4,243 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Runyankole Bible API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Georgia, serif; background: #f5f0e8; color: #1a1208; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .card { max-width: 520px; padding: 48px; text-align: center; }
-    h1 { font-size: 2rem; margin-bottom: 8px; }
-    h1 em { color: #8b3a0f; font-style: italic; }
-    p { color: #5a4a30; margin: 16px 0 32px; line-height: 1.7; }
-    .endpoints { text-align: left; background: #1a1208; color: #f0e6cc; border-radius: 8px; padding: 20px 24px; font-family: monospace; font-size: 13px; line-height: 2; }
-    .endpoints span { color: #d4a820; }
-    .footer { margin-top: 32px; font-size: 12px; color: #9a8a70; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #1a1208; --parchment: #f5f0e8; --parchment-dark: #ede6d6;
+      --gold: #b8860b; --rust: #8b3a0f; --sage: #4a6741;
+      --mono: 'IBM Plex Mono', monospace; --serif: 'Lora', Georgia, serif; --sans: 'Outfit', sans-serif;
+    }
+    body { background: var(--parchment); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; min-height: 100vh; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    header { border-bottom: 1px solid rgba(184,134,11,0.25); padding: 56px 0 48px; }
+    .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 600; line-height: 1.15; color: var(--ink); margin-bottom: 8px; }
+    h1 em { font-style: italic; color: var(--rust); }
+    .subtitle { font-size: 16px; color: #5a4a30; max-width: 520px; margin-top: 12px; }
+    .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+    .badge { font-family: var(--mono); font-size: 11px; padding: 4px 10px; border-radius: 3px; letter-spacing: 0.05em; }
+    .badge-green { background: #e8f0e4; color: var(--sage); border: 1px solid #c2d4bb; }
+    .badge-gold  { background: #fdf3d8; color: var(--gold); border: 1px solid #e8d090; }
+    .badge-rust  { background: #f5e8e0; color: var(--rust); border: 1px solid #dbb89a; }
+    .base-url-block { background: var(--ink); border-radius: 8px; padding: 18px 24px; margin: 40px 0; display: flex; align-items: center; gap: 12px; }
+    .base-url-label { font-family: var(--mono); font-size: 11px; color: #8a7a60; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+    .base-url-value { font-family: var(--mono); font-size: 14px; color: #f0e6cc; }
+    section { padding: 48px 0; border-bottom: 1px solid rgba(184,134,11,0.15); }
+    h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; color: var(--ink); margin-bottom: 24px; }
+    .endpoint { background: white; border: 1px solid var(--parchment-dark); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+    .endpoint-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: background 0.15s; }
+    .endpoint-header:hover { background: #faf7f0; }
+    .endpoint-header.open { border-bottom-color: var(--parchment-dark); }
+    .method { font-family: var(--mono); font-size: 11px; font-weight: 500; background: #e8f0e4; color: var(--sage); border: 1px solid #c2d4bb; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.05em; }
+    .path { font-family: var(--mono); font-size: 14px; color: var(--ink); flex: 1; }
+    .path .param { color: var(--rust); }
+    .ep-desc { font-size: 13px; color: #7a6a50; }
+    .endpoint-body { padding: 20px; display: none; }
+    .endpoint-body.open { display: block; }
+    .params-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .params-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a8a70; text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--parchment-dark); }
+    .params-table td { padding: 8px 10px; border-bottom: 1px solid #f0ebe0; vertical-align: top; }
+    .params-table td:first-child { font-family: var(--mono); font-size: 12px; color: var(--rust); white-space: nowrap; }
+    .required { color: var(--gold); font-size: 10px; font-family: var(--mono); }
+    .optional  { color: #9a8a70; font-size: 10px; font-family: var(--mono); }
+    pre { background: #1a1208; color: #f0e6cc; font-family: var(--mono); font-size: 12.5px; line-height: 1.6; padding: 16px 18px; border-radius: 6px; overflow-x: auto; margin-bottom: 16px; }
+    .json-key { color: #d4a820; } .json-str { color: #a8c080; } .json-num { color: #e08060; }
+    .code-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a8a70; margin-bottom: 6px; }
+    .try-section { margin-top: 16px; }
+    .try-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #9a8a70; margin-bottom: 6px; }
+    .try-row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .try-input { flex: 1; min-width: 80px; font-family: var(--mono); font-size: 12px; padding: 8px 12px; border: 1px solid var(--parchment-dark); border-radius: 5px; background: var(--parchment); color: var(--ink); outline: none; }
+    .try-input:focus { border-color: var(--gold); }
+    .try-btn { font-family: var(--mono); font-size: 11px; padding: 8px 16px; background: var(--ink); color: var(--parchment); border: none; border-radius: 5px; cursor: pointer; letter-spacing: 0.05em; transition: background 0.15s; }
+    .try-btn:hover { background: var(--rust); }
+    .try-result { background: #1a1208; color: #f0e6cc; font-family: var(--mono); font-size: 11.5px; line-height: 1.6; padding: 14px 16px; border-radius: 6px; white-space: pre-wrap; word-break: break-all; display: none; max-height: 400px; overflow-y: auto; }
+    .try-result.visible { display: block; }
+    .try-result.error { color: #e08060; }
+    footer { padding: 40px 0; font-size: 13px; color: #9a8a70; }
+    code { font-family: var(--mono); font-size: 12px; background: var(--parchment-dark); padding: 1px 5px; border-radius: 3px; }
   </style>
 </head>
 <body>
-<div class="card">
-  <h1>Runyankole <em>Bible API</em></h1>
-  <p>Free, public REST API for the Baibuli Erikwera 1964 — 66 books, 31,106 verses in Runyankore-Rukiga.</p>
-  <div class="endpoints">
-    <span>GET</span> /api/books<br>
-    <span>GET</span> /api/verse?book=10&amp;chapter=1&amp;verse=1<br>
-    <span>GET</span> /api/chapter?book=10&amp;chapter=1<br>
-    <span>GET</span> /api/search?q=Ruhanga<br>
-    <span>GET</span> /api/random
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Open REST API</div>
+    <h1>Runyankole<br><em>Bible API</em></h1>
+    <p class="subtitle">Free, public access to the Baibuli Erikwera 1964 — 66 books, 31,106 verses in Runyankore-Rukiga.</p>
+    <div class="badges">
+      <span class="badge badge-green">Free to use</span>
+      <span class="badge badge-gold">No auth required</span>
+      <span class="badge badge-rust">31,106 verses</span>
+      <span class="badge badge-green">CORS enabled</span>
+    </div>
+  </header>
+
+  <div class="base-url-block">
+    <span class="base-url-label">Base URL</span>
+    <span class="base-url-value">https://runyankole-bible-api.vercel.app</span>
   </div>
-  <div class="footer">Free to use · No auth required · CORS enabled</div>
+
+  <section>
+    <h2>Endpoints</h2>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggle(this)">
+        <span class="method">GET</span>
+        <span class="path">/api/books</span>
+        <span class="ep-desc">List all 66 books</span>
+      </div>
+      <div class="endpoint-body">
+        <p style="font-size:14px;color:#5a4a30;margin-bottom:16px;">Returns all books in canonical order with their IDs and Runyankole names.</p>
+        <div class="code-label">Example response</div>
+        <pre>{
+  <span class="json-key">"count"</span>: <span class="json-num">66</span>,
+  <span class="json-key">"books"</span>: [
+    { <span class="json-key">"id"</span>: <span class="json-num">10</span>, <span class="json-key">"short_name"</span>: <span class="json-str">"Kut"</span>, <span class="json-key">"long_name"</span>: <span class="json-str">"Okutandika"</span> }
+  ]
+}</pre>
+        <div class="try-section">
+          <div class="try-label">Try it</div>
+          <div class="try-row"><button class="try-btn" onclick="tryIt('books',{},'books-result')">Run</button></div>
+          <div class="try-result" id="books-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggle(this)">
+        <span class="method">GET</span>
+        <span class="path">/api/verse?<span class="param">book</span>=10&<span class="param">chapter</span>=1&<span class="param">verse</span>=1</span>
+        <span class="ep-desc">Fetch a single verse</span>
+      </div>
+      <div class="endpoint-body">
+        <table class="params-table">
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>book</td><td>integer</td><td><span class="required">required</span></td><td>Book ID — get IDs from /api/books</td></tr>
+          <tr><td>chapter</td><td>integer</td><td><span class="required">required</span></td><td>Chapter number</td></tr>
+          <tr><td>verse</td><td>integer</td><td><span class="required">required</span></td><td>Verse number</td></tr>
+        </table>
+        <div class="code-label">Example response</div>
+        <pre>{
+  <span class="json-key">"book_id"</span>: <span class="json-num">10</span>,
+  <span class="json-key">"book_short"</span>: <span class="json-str">"Kut"</span>,
+  <span class="json-key">"book_name"</span>: <span class="json-str">"Okutandika"</span>,
+  <span class="json-key">"chapter"</span>: <span class="json-num">1</span>,
+  <span class="json-key">"verse"</span>: <span class="json-num">1</span>,
+  <span class="json-key">"text"</span>: <span class="json-str">"Omu kutandika Ruhanga akahanga eiguru n'ensi."</span>
+}</pre>
+        <div class="try-section">
+          <div class="try-label">Try it</div>
+          <div class="try-row">
+            <input class="try-input" id="v-book" value="10" placeholder="book">
+            <input class="try-input" id="v-chapter" value="1" placeholder="chapter">
+            <input class="try-input" id="v-verse" value="1" placeholder="verse">
+            <button class="try-btn" onclick="tryIt('verse',{book:document.getElementById('v-book').value,chapter:document.getElementById('v-chapter').value,verse:document.getElementById('v-verse').value},'verse-result')">Run</button>
+          </div>
+          <div class="try-result" id="verse-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggle(this)">
+        <span class="method">GET</span>
+        <span class="path">/api/chapter?<span class="param">book</span>=10&<span class="param">chapter</span>=1</span>
+        <span class="ep-desc">Fetch all verses in a chapter</span>
+      </div>
+      <div class="endpoint-body">
+        <table class="params-table">
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>book</td><td>integer</td><td><span class="required">required</span></td><td>Book ID</td></tr>
+          <tr><td>chapter</td><td>integer</td><td><span class="required">required</span></td><td>Chapter number</td></tr>
+        </table>
+        <div class="try-section">
+          <div class="try-label">Try it</div>
+          <div class="try-row">
+            <input class="try-input" id="c-book" value="10" placeholder="book">
+            <input class="try-input" id="c-chapter" value="1" placeholder="chapter">
+            <button class="try-btn" onclick="tryIt('chapter',{book:document.getElementById('c-book').value,chapter:document.getElementById('c-chapter').value},'chapter-result')">Run</button>
+          </div>
+          <div class="try-result" id="chapter-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggle(this)">
+        <span class="method">GET</span>
+        <span class="path">/api/search?<span class="param">q</span>=Ruhanga</span>
+        <span class="ep-desc">Search verses by keyword</span>
+      </div>
+      <div class="endpoint-body">
+        <table class="params-table">
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>q</td><td>string</td><td><span class="required">required</span></td><td>Search term in Runyankole (min 2 chars)</td></tr>
+          <tr><td>limit</td><td>integer</td><td><span class="optional">optional</span></td><td>Results per page, max 100 (default: 20)</td></tr>
+          <tr><td>offset</td><td>integer</td><td><span class="optional">optional</span></td><td>Pagination offset (default: 0)</td></tr>
+        </table>
+        <div class="try-section">
+          <div class="try-label">Try it</div>
+          <div class="try-row">
+            <input class="try-input" id="s-q" value="Ruhanga" placeholder="search term">
+            <button class="try-btn" onclick="tryIt('search',{q:document.getElementById('s-q').value},'search-result')">Run</button>
+          </div>
+          <div class="try-result" id="search-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header" onclick="toggle(this)">
+        <span class="method">GET</span>
+        <span class="path">/api/random</span>
+        <span class="ep-desc">Get a random verse</span>
+      </div>
+      <div class="endpoint-body">
+        <table class="params-table">
+          <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>book</td><td>integer</td><td><span class="optional">optional</span></td><td>Limit random to a specific book</td></tr>
+        </table>
+        <div class="try-section">
+          <div class="try-label">Try it</div>
+          <div class="try-row"><button class="try-btn" onclick="tryIt('random',{},'random-result')">Run</button></div>
+          <div class="try-result" id="random-result"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Notes</h2>
+    <p style="font-size:14px;color:#5a4a30;margin-bottom:12px;">Book IDs follow the standard numeric scheme — Genesis is <code>10</code>, Revelation is <code>730</code>. Use <code>/api/books</code> to get the full list.</p>
+    <p style="font-size:14px;color:#5a4a30;margin-bottom:12px;">All responses are JSON. CORS is enabled — call this API from any browser, app, or server.</p>
+    <p style="font-size:14px;color:#5a4a30;">Translation: <em>Baibuli Erikwera 1964</em> © The Bible Society of Uganda.</p>
+  </section>
+
+ <footer>Runyankole Bible API — built with Supabase + Vercel &nbsp;·&nbsp; Free and open &nbsp;·&nbsp; Built by <a href="https://www.oddshoes.dev/" target="_blank" style="color: var(--gold); text-decoration: none;">Odd Shoes</a></footer>
 </div>
+<script>
+  function toggle(header) {
+    header.classList.toggle('open')
+    header.nextElementSibling.classList.toggle('open')
+  }
+  async function tryIt(endpoint, params, resultId) {
+    const el = document.getElementById(resultId)
+    el.textContent = 'Loading...'
+    el.className = 'try-result visible'
+    el.classList.remove('error')
+    const qs = new URLSearchParams(params).toString()
+    try {
+      const res = await fetch(`/api/${endpoint}${qs ? '?' + qs : ''}`)
+      const data = await res.json()
+      el.textContent = JSON.stringify(data, null, 2)
+      if (!res.ok) el.classList.add('error')
+    } catch(e) {
+      el.textContent = 'Error: ' + e.message
+      el.classList.add('error')
+    }
+  }
+</script>
 </body>
 </html>
